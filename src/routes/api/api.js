@@ -1,7 +1,23 @@
 const express = require('express');
 const isLoggedIn = require('../../middleware/isLoggedIn');
+const connection = require('../../utils/dbSetup');
 
 const router = express.Router();
+
+router.use('/test', (req, res, next) => {
+    connection.query(
+        'SELECT * from test',
+        function (err, data, fields) {
+            if (err) {
+                console.error(err);
+                res.status(500).json({ message: 'Something went wrong!', success: false });
+            } else {
+                console.log(data);
+                res.status(200).send({ data, success: true });
+            }
+        }
+    );
+});
 
 router.get('/connection', (req, res) => {
     const url = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
