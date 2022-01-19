@@ -4,5 +4,6 @@ module.exports = (req, res, next) => {
     } else {
         req.session.views = 1;
     }
+
     return next();
 };

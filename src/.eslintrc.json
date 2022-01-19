@@ -82,6 +82,10 @@
                 "after": true
             }
         ],
+        "block-spacing": [
+            "error",
+            "always"
+        ],
         "brace-style": [
             "error",
             "1tbs"
@@ -111,9 +115,45 @@
             "error",
             "always"
         ],
+        "func-call-spacing": [
+            "error",
+            "never"
+        ],
         "function-call-argument-newline": [
             "error",
             "consistent"
+        ],
+        "function-paren-newline": [
+            "error",
+            "multiline"
+        ],
+        "key-spacing": "error",
+        "keyword-spacing": "error",
+        "max-len": [
+            "warn",
+            {
+                "code": 100
+            }
+        ],
+        "max-statements-per-line": [
+            "warn",
+            {
+                "max": 1
+            }
+        ],
+        "no-mixed-spaces-and-tabs": "error",
+        "no-multiple-empty-lines": "warn",
+        "no-trailing-spaces": "warn",
+        "object-curly-newline": [
+            "error",
+            {
+                "multiline": true,
+                "minProperties": 3
+            }
+        ],
+        "object-curly-spacing": [
+            "warn",
+            "always"
         ]
     },
     "globals": {

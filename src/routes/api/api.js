@@ -8,7 +8,9 @@ router.get('/connection', (req, res) => {
     const { ip } = req;
     const userAgent = req.get('user-agent');
     const cookies = req.session;
-    res.json({ url, ip, userAgent, cookies, envPort: process.env.PORT || 'unknown', success: true });
+    res.json({
+        url, ip, userAgent, cookies, envPort: process.env.PORT || 'unknown', success: true,
+    });
 });
 
 router.get('/userinfo', isLoggedIn, (req, res) => {

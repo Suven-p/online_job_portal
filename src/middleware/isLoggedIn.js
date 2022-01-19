@@ -3,9 +3,7 @@ function isLoggedIn (req, res, next) {
         return next();
     }
 
-    res.status(400).json({
-        message: 'access denied',
-    });
+    res.status(400).json({ message: 'access denied' });
 }
 
 module.exports = isLoggedIn;
