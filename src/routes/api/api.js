@@ -1,13 +1,23 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const isLoggedIn = require('../../middleware/isLoggedIn');
 
-router.get('/connection', (req, res, next) => {
-    const url = req.protocol + '://' + req.get('host') + req.originalUrl;
-    const ip = req.ip;
-    res.json({ url, ip, envPort: process.env.PORT || 'unknown', success: true });
+const router = express.Router();
+
+router.get('/connection', (req, res) => {
+    const url = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+    const { ip } = req;
+    const userAgent = req.get('user-agent');
+    const cookies = req.session;
+    res.json({ url, ip, userAgent, cookies, envPort: process.env.PORT || 'unknown', success: true });
 });
 
-router.get('/', (req, res, next) => {
+router.get('/userinfo', isLoggedIn, (req, res) => {
+    res.json({ user: req.user });
+});
+
+router.use('/auth', require('./auth/auth'));
+
+router.get('/', (req, res) => {
     res.json({ message: 'This is the api page!', success: true });
 });
 
