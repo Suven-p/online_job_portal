@@ -4,19 +4,14 @@ const connection = require('../../utils/dbSetup');
 
 const router = express.Router();
 
-router.use('/test', (req, res, next) => {
-    connection.query(
-        'SELECT * from test',
-        function (err, data, fields) {
-            if (err) {
-                console.error(err);
-                res.status(500).json({ message: 'Something went wrong!', success: false });
-            } else {
-                console.log(data);
-                res.status(200).send({ data, success: true });
-            }
-        }
-    );
+router.use('/test', async (req, res, next) => {
+    try {
+        const [rows] = await connection.query('SELECT * from test');
+        res.status(200).send({ data: { rows }, success: true });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Something went wrong!', success: false });
+    }
 });
 
 router.get('/connection', (req, res) => {

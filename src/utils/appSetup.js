@@ -6,22 +6,33 @@ const path = require('path');
 const logger = require('../middleware/logger');
 const passportSetup = require('./passportSetup');
 const dbConnection = require('./dbSetup');
+const MySQLStore = require('express-mysql-session')(session);
 
 const appSetup = (app) => {
     app.use(express.static(path.join(__dirname, 'public')));
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
 
+    const sessionStore = new MySQLStore({}, dbConnection, (err) => {
+        if (err) {
+            console.error('Error setting up sessionStore', err);
+        } else {
+            console.log('Session store connected!');
+        }
+    });
     const sess = {
-        secret: process.env.SESSION_SECRET,
         name: 'sessionId',
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: true,
+        store: sessionStore,
         cookie: {
             maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
             secure: app.get('env') === 'production',
             httpOnly: true,
+            // sameSite: true,
         },
-        resave: false,
-        saveUninitialized: true,
+
     };
     app.set('trust proxy', 1);
     if (!process.env.SESSION_SECRET) {
@@ -37,13 +48,6 @@ const appSetup = (app) => {
 
     app.use(morgan('dev'));
     app.use(logger);
-
-    dbConnection.ping(function (err) {
-        if (err) {
-            throw err;
-        }
-        console.log('Server responded to ping');
-    });
 };
 
 module.exports = appSetup;
