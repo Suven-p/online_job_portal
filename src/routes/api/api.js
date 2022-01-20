@@ -5,7 +5,9 @@ const router = express.Router();
 router.use('/auth', require('./auth/auth'));
 
 router.get('/userinfo', isLoggedIn, (req, res) => {
-    res.json({ user: req.user, session: req.session });
+    res.json({
+        user: req.user, session: req.session, success: true,
+    });
 });
 
 router.get('/', (req, res) => {
