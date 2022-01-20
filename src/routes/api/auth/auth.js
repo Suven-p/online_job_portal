@@ -10,7 +10,6 @@ router.get(
 router.get(
     '/failed',
     (req, res) => {
-        console.log(req);
         return res.json({
             message: 'Failed to authenticate', log: req.session.messages, success: false,
         });

@@ -20,6 +20,7 @@ const appSetup = (app) => {
             console.log('Session store connected!');
         }
     });
+    const cookieMaxAge = 1000 * 60 * 60 * 24 * 7; // 1 week
     const sess = {
         name: 'sessionId',
         secret: process.env.SESSION_SECRET,
@@ -27,7 +28,7 @@ const appSetup = (app) => {
         saveUninitialized: true,
         store: sessionStore,
         cookie: {
-            maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+            maxAge: cookieMaxAge,
             secure: app.get('env') === 'production',
             httpOnly: true,
             // sameSite: true,
