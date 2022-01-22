@@ -4,11 +4,10 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "build": "echo \"Error: no build script specified\"",
     "test": "echo \"Error: no test script specified\"",
-    "start": "node bin/www",
-    "client": "npm start --prefix client",
-    "server": "nodemon --ignore ./client bin/www",
+    "start": "gulp start",
+    "client": "gulp client",
+    "server": "gulp server",
     "dev": "concurrently \"yarn run server\" \"yarn run client\""
   },
   "author": "nobody",
@@ -22,12 +21,17 @@
     "express": "^4.17.2",
     "express-mysql-session": "^2.1.7",
     "express-session": "^1.17.2",
+    "express-validator": "^6.14.0",
+    "grunt": "^1.4.1",
+    "gulp": "^4.0.2",
     "morgan": "^1.10.0",
     "mysql2": "^2.3.3",
     "passport": "^0.5.2",
     "passport-google-oauth20": "^2.0.0",
     "passport-local": "^1.0.0",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "webpack": "^5.67.0",
+    "webpack-node-externals": "^3.0.0"
   },
   "devDependencies": {
     "concurrently": "^7.0.0",
@@ -42,6 +46,7 @@
     "eslint-plugin-promise": "^5.2.0",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "webpack-cli": "^4.9.1"
   }
 }
