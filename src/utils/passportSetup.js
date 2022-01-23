@@ -1,6 +1,8 @@
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const connection = require('./dbSetup');
+const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const LocalStrategy = require('passport-local').Strategy;
+const connection = require('./dbSetup');
 
 const passportConfigure = (passport) => {
     passport.use(new GoogleStrategy(
@@ -14,13 +16,15 @@ const passportConfigure = (passport) => {
             try {
                 let user = {};
                 const [providerData] = await connection.query(
-                    'SELECT uid FROM federated_credentials ' +
-                    'WHERE provider = "google" AND identifier = ?',
+                    'SELECT uid FROM ' +
+                    'federated_credentials f INNER JOIN federated_credentials_provider p ON' +
+                    'f.provider_id = p.provider_name ' +
+                    'WHERE provider_name = "google" AND identifier = ?',
                     [profile.id]
                 );
                 if (providerData.length === 0) {
                     const [userData] = await connection.query(
-                        'SELECT * FROM users WHERE email = ?',
+                        'SELECT uid FROM emails WHERE email = ?',
                         [profile.emails[0].value]
                     );
                     if (userData.length === 0) {
@@ -65,6 +69,29 @@ const passportConfigure = (passport) => {
             }
         }
     ));
+
+    passport.use(new LocalStrategy(async (email, password, cb) => {
+        try {
+            const invalidDataPrompt = 'Incorrect username or password';
+            const [userData] = await connection.query(
+                'SELECT * FROM users INNER JOIN email ON email.uid = users.uid WHERE email = ?',
+                [email]
+            );
+            if (userData.length === 0) {
+                return cb(null, false, { message: invalidDataPrompt });
+            }
+            const user = userData[0];
+            user.email = email;
+            const passwordMatches = await bcrypt.compare(password, user.password);
+            if (!passwordMatches) {
+                return cb(null, false, { message: invalidDataPrompt });
+            }
+            return cb(null, user);
+        } catch (err) {
+            console.error('Error in local login: ', err);
+            return cb(err, null);
+        }
+    }));
 
     passport.serializeUser((user, cb) => {
         cb(null, user.uid);

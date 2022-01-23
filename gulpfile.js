@@ -2,8 +2,6 @@ const gulp = require('gulp');
 const { series, parallel } = require('gulp');
 const webpack = require('webpack');
 const webpackConfig = require('./webpack.config');
-const util = require('util');
-const exec = util.promisify(require('child_process').exec);
 const spawn = require('child_process').spawn;
 
 const env = process.env.NODE_ENV || 'development';
@@ -50,9 +48,9 @@ const server = env === 'production'
 async function client (cb) {
     let command = '';
     if (env === 'production') {
-        command = 'cd client && yarn run build && cd ..';
+        command = 'cd ./src/client && yarn run build && cd ../..';
     } else {
-        command = 'cd client && yarn run start && cd ..';
+        command = 'cd ./src/client && yarn run start && cd ../..';
     }
     const child = spawn(command, { shell: true });
     child.on('error', (err) => {
@@ -77,8 +75,8 @@ function watch (cb) {
         '**/**',
         {
             ignored: [
-                './client',
-                './public',
+                './src/client',
+                './src/public',
                 './dist',
                 './node_modules',
             ],

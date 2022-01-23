@@ -1,9 +1,13 @@
 const express = require('express');
 const googleHandler = require('./google');
+const localLoginHandler = require('./login');
+const localRegisterHandler = require('./register');
 
 const router = express.Router();
 
 router.use('/google', googleHandler);
+router.use('/login', localLoginHandler);
+router.use('/register', localRegisterHandler);
 
 router.get(
     '/failed',
