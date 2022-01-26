@@ -5,11 +5,11 @@ module.exports = {
     /**
      * @type {("none" | "development" | "production")}
      */
-    mode: 'production',
+    mode: 'development',
     entry: './src/bin/www',
     output: {
         path: path.join(__dirname, 'dist'),
-        filename: 'backend.js',
+        filename: 'backend.cjs',
     },
     module: {
         rules: [
@@ -26,7 +26,14 @@ module.exports = {
             '.ts',
             '.js',
         ],
-        alias: { '@root': path.resolve('./src') },
+        alias: {
+            '@root': path.resolve('./src'),
+            '@middleware': path.resolve('./src/middleware'),
+            '@models': path.resolve('./src/models'),
+            '@routes': path.resolve('./src/routes'),
+            '@utils': path.resolve('./src/utils'),
+            '@typings': path.resolve('./src/typings'),
+        },
     },
     externalsPresets: { node: true },
     externals: [nodeExternals()],

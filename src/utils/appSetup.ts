@@ -1,14 +1,15 @@
-const express = require('express');
-const session = require('express-session');
-const morgan = require('morgan');
-const passport = require('passport');
-const path = require('path');
-const logger = require('../middleware/logger');
-const passportSetup = require('./passportSetup');
-const dbConnection = require('./dbSetup');
-const MySQLStore = require('express-mysql-session')(session);
+import express from 'express';
+import session from 'express-session';
+import morgan from 'morgan';
+import passport from 'passport';
+import path from 'path';
+import logger from '../middleware/logger';
+import passportSetup from './passportSetup';
+import dbConnection from './dbSetup';
 
-const appSetup = (app) => {
+var MySQLStore = require('express-mysql-session')(session);
+
+const appSetup = (app: express.Application) => {
     app.use(express.static(path.join(__dirname, 'public')));
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));

@@ -1,6 +1,6 @@
-const mysql = require('mysql2/promise');
+import { createPool } from 'mysql2/promise';
 
-const connection = mysql.createPool({
+const connection = createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     port: parseInt(process.env.DB_PORT, 10),
@@ -14,4 +14,5 @@ connection.getConnection()
     })
     .catch(console.error);
 
+export default connection;
 module.exports = connection;

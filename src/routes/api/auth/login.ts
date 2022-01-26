@@ -1,15 +1,17 @@
-const express = require('express');
-const passport = require('passport');
+import express from 'express';
+import passport from 'passport';
 
 const router = express.Router();
 
 router.post(
     '/',
     passport.authenticate('local', {
-        successRedirect: '/api/userinfo',
         failureRedirect: '/api/auth/failed',
         failureMessage: true,
-    })
+    }),
+    (req, res, next) => {
+        res.redirect('/api/userinfo');
+    }
 );
 
-module.exports = router;
+export default router;

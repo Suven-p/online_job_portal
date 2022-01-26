@@ -22,8 +22,8 @@ function backendBuild (cb) {
 
 function backendStart (cb) {
     const command = env === 'production'
-        ? 'node ./dist/backend.js'
-        : 'nodemon --watch ./dist/backend.js ./dist/backend.js';
+        ? 'node ./dist/backend.cjs'
+        : 'nodemon --watch ./dist/backend.cjs ./dist/backend.cjs';
     const child = spawn(command, { shell: true });
     child.on('error', (err) => {
         process.stderr.write(`Could not start backend: ${err}`);

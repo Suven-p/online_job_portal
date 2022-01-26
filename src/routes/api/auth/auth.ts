@@ -1,7 +1,7 @@
-const express = require('express');
-const googleHandler = require('./google');
-const localLoginHandler = require('./login');
-const localRegisterHandler = require('./register');
+import express from 'express';
+import googleHandler from './google';
+import localLoginHandler from './login';
+import localRegisterHandler from './register';
 
 const router = express.Router();
 
@@ -23,4 +23,4 @@ router.get('/logout', (req, res) => {
     res.json({ message: 'Logout successful!', success: true });
 });
 
-module.exports = router;
+export default router;
