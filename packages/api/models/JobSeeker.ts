@@ -5,7 +5,6 @@ import {
   UpdateJobseekerParameters,
   Skill,
   Jobseeker,
-  PublicUser,
   Academics,
 } from '@typings/User';
 import connection from '@utils/dbSetup';
@@ -188,14 +187,14 @@ export const addJobseekerSkills = async (
     ]);
   } catch (err) {
     logger.error('Error when adding skills: ', err);
-    //@ts-ignore
-    if (err.errno === 1062) {
+    if ((err as { errno: number }).errno === 1062) {
       return {
         status: 400,
         message: "You've already added this skill!",
         success: false,
       };
     }
+
     return { status: 500, message: 'Something went wrong!', success: false };
   }
   return { status: 200, skills: toAdd, success: true };
@@ -224,9 +223,7 @@ export const addJobseekerAcademics = async (
       replaceIfExists,
     ]);
   } catch (err) {
-    logger.error('Error when adding qualification: ', err);
-    //@ts-ignore
-    switch (err.errno) {
+    switch ((err as { errno: number }).errno) {
       case 1062: {
         return {
           status: 400,
@@ -242,6 +239,7 @@ export const addJobseekerAcademics = async (
         };
       }
       default: {
+        logger.error('Error when adding academic qualification: ', err);
         return {
           status: 500,
           message: 'Something went wrong!',
@@ -297,20 +295,20 @@ export const updateJobseeker = async (
 
 export const getJobseekerById = async (userId: string) => {
   try {
-    const [basic_result]: [RowDataPacket[][], FieldPacket[]] =
+    const [basicResult]: [RowDataPacket[][], FieldPacket[]] =
       await connection.execute(
         'SELECT * FROM applicant_data ' + 'WHERE id = ?',
         [userId],
       );
 
-    const [email_result] = <{ email: string }[][]>(
+    const [emailResult] = <{ email: string }[][]>(
       (<unknown>(
         await connection.execute('SELECT email FROM auth ' + 'WHERE id = ?', [
           userId,
         ])
       ))
     );
-    const [skills_result] = <Skill[][]>(
+    const [skillsResult] = <Skill[][]>(
       (<unknown>(
         await connection.execute(
           'SELECT name, proficiency, experience FROM applicant_skills ' +
@@ -320,7 +318,7 @@ export const getJobseekerById = async (userId: string) => {
       ))
     );
 
-    const [academics_result] = <Academics[][]>(
+    const [academicsResult] = <Academics[][]>(
       (<unknown>(
         await connection.execute(
           'SELECT aq.qid, aq.level, aq.discipline, aq.degree ' +
@@ -333,13 +331,11 @@ export const getJobseekerById = async (userId: string) => {
       ))
     );
 
-    let user = {
-      basics: { ...basic_result[0], email: email_result[0].email },
-      skills: skills_result,
-      academics: academics_result,
+    const user = {
+      basics: { ...basicResult[0], email: emailResult[0].email },
+      skills: skillsResult,
+      academics: academicsResult,
     };
-    console.log('academics', academics_result);
-    console.log('user', user);
     return user;
   } catch (err) {
     logger.error('Error when applying for job: ', err);

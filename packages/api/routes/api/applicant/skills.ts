@@ -3,10 +3,9 @@ import {
   jobseekerSkillsSchema,
   addJobseekerSkills,
   replaceJobseekerSkills,
-} from '@models/User';
+} from '@models/JobSeeker';
 import { Jobseeker } from '@typings/User';
 import { checkSchema, validationResult } from 'express-validator';
-import axios from 'axios';
 
 const router = express.Router();
 

@@ -161,6 +161,7 @@ router.post(
 
       const job = await createNewJobPost(jobPostData);
 
+      console.log(job.jobId)
       await insertNewJobStatistics(job.jobId);
       await axios.get(`http://localhost:5000/newJob/${job.jobId}`);
 
@@ -238,7 +239,7 @@ router.get(
         );
       console.log(companyIdArray);
       console.log(companyIdArray[0].companyId);
-      let companyID = companyIdArray[0].companyId;
+      const companyID = companyIdArray[0].companyId;
       console.log(companyID);
 
       if (req.user!.user.basics.id !== companyID) {
@@ -264,7 +265,7 @@ router.get(
 router.get('/test/1', async (req, res) => {
   const [result] = await connection.query('SELECT * from allJobs');
 
-  let x: JobReturn = {
+  const x: JobReturn = {
     jobId: '',
     companyId: '',
     title: '',
@@ -279,11 +280,11 @@ router.get('/test/1', async (req, res) => {
   };
   const to_send: { [id: string]: typeof x } = {};
 
-  let xskills = {
+  const xskills = {
     skillName: '',
     proficiency: '',
   };
-  let xqualifications = {
+  const xqualifications = {
     qid: '',
     level: '',
     degree: '',
@@ -308,7 +309,7 @@ router.get('/test/1', async (req, res) => {
         to_send[a.jobId].qualifications.push({ ...xqualifications });
       }
     } else {
-      let x = {
+      const x = {
         jobId: a.jobId,
         companyId: a.companyId,
         title: a.title,

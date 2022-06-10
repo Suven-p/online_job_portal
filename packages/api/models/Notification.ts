@@ -6,16 +6,15 @@ import { Job } from '@typings/Jobs';
 import { sendSms } from '@utils/Sms';
 import sendNotificationEmail from '@utils/notificationEmail';
 import { getJobById } from './Jobs';
-import { getJobseekerById } from './User';
+import { getJobseekerById } from './JobSeeker';
 const shortUrl = require('node-url-shortener');
 import connection from '@utils/dbSetup';
-import { RowDataPacket, FieldPacket } from 'mysql2';
 
 export const sendNotifications = async (userId: string, jobId: string) => {
   try {
-    let job = await getJobById(jobId);
+    const job = await getJobById(jobId);
 
-    let user = await getJobseekerById(userId);
+    const user = await getJobseekerById(userId);
 
     await connection.execute(
       `update job_statistics
@@ -26,8 +25,8 @@ export const sendNotifications = async (userId: string, jobId: string) => {
 
     sendNotificationEmail(user, job);
 
-    let userFirstName = user.basics.firstName;
-    let jobTitle = job.title;
+    const userFirstName = user.basics.firstName;
+    const jobTitle = job.title;
     let userPhoneNumber = user.basics.phone;
     if (userPhoneNumber === null) return;
     if (!userPhoneNumber.startsWith('+')) {
@@ -41,11 +40,11 @@ export const sendNotifications = async (userId: string, jobId: string) => {
       };
     }
 
-    let jobURL = `http://nepaljobs.cf/jobs/${job.jobId}?from=sms&applicantId=${userId}`;
+    const jobURL = `http://nepaljobs.cf/jobs/${job.jobId}?from=sms&applicantId=${userId}`;
     let smsURL = '';
     shortUrl.short(jobURL, function (err, url) {
       smsURL = url;
-      let smsMessage =
+      const smsMessage =
         `Dear ${userFirstName}, \n` +
         `A new job for ${jobTitle} has been posted and you matched the requirements for the job.\n` +
         `${smsURL}`;

@@ -2,7 +2,7 @@
 
 import express, { Request, Response } from 'express';
 import { checkSchema, validationResult } from 'express-validator';
-import { createJobseeker, jobseekerRegisterSchema } from '@models/User';
+import { createJobseeker, jobseekerRegisterSchema } from '@models/JobSeeker';
 import {
   organizationRegisterSchema,
   createNewOrganization,

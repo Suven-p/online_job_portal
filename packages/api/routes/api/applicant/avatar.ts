@@ -1,5 +1,4 @@
-import { isApplicant } from '@middleware/authorization';
-import { updateJobseekerPicture } from '@models/User';
+import { updateJobseekerPicture } from '@models/JobSeeker';
 import { Jobseeker } from '@typings/User';
 import express from 'express';
 import fileUpload from 'express-fileupload';

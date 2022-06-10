@@ -4,7 +4,7 @@ import academicsRoute from './academics';
 import avatarRoute from './avatar';
 import jobsRoute from './jobs';
 import skillsRoute from './skills';
-import { updateJobseeker, jobseekerUpdateSchema } from '@models/User';
+import { updateJobseeker, jobseekerUpdateSchema } from '@models/JobSeeker';
 import { UpdateJobseekerParameters } from '@typings/User';
 import logger from '@utils/logger';
 import schemaHandler from '@middleware/schemaHandler';

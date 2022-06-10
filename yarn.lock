@@ -7705,6 +7705,11 @@ multicast-dns@^7.2.4:
     dns-packet "^5.2.2"
     thunky "^1.0.2"
 
+mysql-error-codes@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/mysql-error-codes/-/mysql-error-codes-0.1.2.tgz#eda08207c60f758cc9b4c7b01f83f7b4fa0ccf46"
+  integrity sha512-PyfZvEue7Fk6JkhsJT6NWvkMeXmyU1gmO2E4PcfGNxiUQcraPaZ7Usq+ZGwyEGiwq7uGQT9ORf351losk8RyUg==
+
 mysql2@^2.3.3:
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/mysql2/-/mysql2-2.3.3.tgz#944f3deca4b16629052ff8614fbf89d5552545a0"

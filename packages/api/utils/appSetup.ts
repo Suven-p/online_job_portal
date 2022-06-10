@@ -8,12 +8,14 @@ import { databaseService } from '@root/services/bootstrap';
 // eslint-disable-next-line @typescript-eslint/no-var-requires -- cannot get it to work
 const session = require('express-session');
 import mySQLSessionStore from 'express-mysql-session';
+import config from '@root/services/Configuration/StaticConfiguration';
+import path from 'path';
 
 const MySQLStore = mySQLSessionStore(session);
 
 const appSetup = (app: express.Application): void => {
   app.locals.dbService = databaseService;
-  app.use(express.static('./dist/public'));
+  app.use(express.static(path.resolve('./dist/public')));
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 

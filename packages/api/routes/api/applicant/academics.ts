@@ -1,16 +1,11 @@
-import connection from '@utils/dbSetup';
 import express, { Request, Response } from 'express';
-import { isApplicant } from '@middleware/authorization';
 import {
   addJobseekerAcademics,
   replaceJobseeerAcademics,
-  replaceJobseekerSkills,
   jobseekerAcademicsSchema,
-} from '@models/User';
-import logger from '@utils/logger';
+} from '@models/JobSeeker';
 import { checkSchema, validationResult } from 'express-validator';
 import { Jobseeker } from '@typings/User';
-import { QueryError } from 'mysql2';
 
 const router = express.Router();
 

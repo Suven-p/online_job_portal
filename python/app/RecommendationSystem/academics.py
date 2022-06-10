@@ -1,4 +1,5 @@
 import asyncio
+import os
 
 from numpy import sometrue
 import mysql.connector
@@ -16,6 +17,9 @@ class AcademicQualification:
         )
         self.cached = None
         self.lock = asyncio.Lock()
+
+    async def close(self):
+        self.db.close()
 
     async def academicData(self):
         """
@@ -41,15 +45,17 @@ class AcademicQualification:
             # {level: {discipline: [qid, qid, ...]}}
             qidByLevelDiscipline = {}
             cursor = self.db.cursor()
-            cursor.execute("""
+            cursor.execute(
+                """
                 SELECT qid, level, discipline, degree from academic_qualifications
-            """)
+            """
+            )
             for qid, level, discipline, degree in cursor:
                 temp[qid] = set()
                 temp[qid].add(qid)
-                if discipline == 'ALL_DISCIPLINES':
+                if discipline == "ALL_DISCIPLINES":
                     allDisciplineQid[level] = qid
-                elif degree == 'ALL_DEGREES':
+                elif degree == "ALL_DEGREES":
                     if discipline not in allDegreeQid:
                         allDegreeQid[discipline] = {}
                     allDegreeQid[discipline][level] = qid
@@ -61,30 +67,33 @@ class AcademicQualification:
             # For each qid with discipline ALL_DISCIPLINES add all qids with same level
             for level, qid in allDisciplineQid.items():
                 temp[qid] = temp[qid].union(
-                    set([j for i in qidByLevelDiscipline[level].values()
-                        for j in i])
+                    set([j for i in qidByLevelDiscipline[level].values() for j in i])
                 )
             # For each qid with degree ALL_DEGREES add all qids with same discipline and level
             for discipline, levelQid in allDegreeQid.items():
                 for level, qid in levelQid.items():
-                    temp[qid] = temp[qid].union(
-                        qidByLevelDiscipline[level][discipline]
-                    )
+                    temp[qid] = temp[qid].union(qidByLevelDiscipline[level][discipline])
             self.cached = temp
             return self.cached
 
     async def getUserAcademics(self, uid):
         cursor = self.db.cursor()
-        cursor.execute("""
+        cursor.execute(
+            """
         SELECT qid FROM applicant_academics WHERE id = %s
-        """, (uid,))
+        """,
+            (uid,),
+        )
         return [i[0] for i in cursor.fetchall()]
 
     async def getJobAcademics(self, jid):
         cursor = self.db.cursor()
-        cursor.execute("""
+        cursor.execute(
+            """
         SELECT qid FROM job_qualifications WHERE jobId = %s
-        """, (jid,))
+        """,
+            (jid,),
+        )
         return [i[0] for i in cursor.fetchall()]
 
     async def determineAcademicCompatibility(self, user, job):
@@ -98,4 +107,4 @@ class AcademicQualification:
             accepted = rowData[jobAcademic]
             if sometrue([i in userAcademics for i in accepted]):
                 valid.append(jobAcademic)
-        return len(valid)/len(jobAcademics)
+        return len(valid) / len(jobAcademics)

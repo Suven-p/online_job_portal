@@ -7,6 +7,7 @@ const dirname = __dirname;
 const config = {
   // @ts-ignore
   mode: process.env.NODE_ENV || 'development',
+  watch: process.env.NODE_ENV !== 'production',
   entry: './packages/api/bin/www',
   output: {
     path: path.join(dirname, 'dist'),
