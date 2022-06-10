@@ -7,33 +7,43 @@ const dirname = __dirname;
 const config = {
   // @ts-ignore
   mode: process.env.NODE_ENV || 'development',
-  entry: './src/bin/www',
+  watch: process.env.NODE_ENV !== 'production',
+  entry: './packages/api/bin/www',
   output: {
     path: path.join(dirname, 'dist'),
     filename: 'backend.cjs',
+  },
+  watchOptions: {
+    ignored: [
+      '.vscode',
+      '.yarn',
+      'dist',
+      'Local_API_v0_19_4',
+      'logs',
+      '**/node_modules',
+      'python',
+      'scripts',
+      'test',
+    ],
   },
   module: {
     rules: [
       {
         test: /\.tsx?$/,
         loader: 'ts-loader',
-        exclude: [
-          path.resolve('./src/client/'),
-          path.resolve('./python/'),
-          /node_modules/,
-        ],
+        exclude: [/node_modules/],
       },
     ],
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
     alias: {
-      '@middleware': path.resolve('./src/middleware'),
-      '@models': path.resolve('./src/models'),
-      '@routes': path.resolve('./src/routes'),
-      '@utils': path.resolve('./src/utils'),
-      '@typings': path.resolve('./src/typings'),
-      '@root': path.resolve('./src'),
+      '@middleware': path.resolve(dirname, 'packages/api/middleware'),
+      '@models': path.resolve(dirname, 'packages/api/models'),
+      '@routes': path.resolve(dirname, 'packages/api/routes'),
+      '@utils': path.resolve(dirname, 'packages/api/utils'),
+      '@typings': path.resolve(dirname, 'packages/api/typings'),
+      '@root': path.resolve(dirname, 'packages/api'),
     },
   },
   externalsPresets: { node: true },

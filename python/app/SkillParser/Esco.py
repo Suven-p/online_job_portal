@@ -16,10 +16,10 @@ class Esco:
             PREFIX esco: <http://data.europa.eu/esco/model#>
             PREFIX text: <http://jena.apache.org/text#>
         """
-        self.client = SPARQLClient("http://localhost:3030/esco/query")
+        self.client = SPARQLClient("http://localhost:8080/fuseki/esco-v1_1_0/query")
         self.session = aiohttp.ClientSession()
         self.config = {
-            'multiplierReduction': 0.8,
+            "multiplierReduction": 0.8,
         }
 
     async def __aenter__(self):
@@ -41,19 +41,19 @@ class Esco:
             }}
         """
         response = await self.client.query(query)
-        return [response['results']['bindings'][0]['uri']['value']]
+        return [response["results"]["bindings"][0]["uri"]["value"]]
 
     async def getURI(self, query, limit=1):
-        url = "https://ec.europa.eu/esco/api/search"
+        url = "http://localhost:8080/search"
         params = {
-            'text': query,
-            'limit': limit,
-            'language': 'en',
+            "text": query,
+            "limit": limit,
+            "language": "en",
             # 'viewObsolete': False,
         }
         async with self.session.get(url, params=params) as response:
-            results = (await response.json())['_embedded']['results']
-            return [i['uri']for i in results]
+            results = (await response.json())["_embedded"]["results"]
+            return [i["uri"] for i in results]
 
     async def getScores(self, startURI):
         print(startURI)
@@ -68,15 +68,14 @@ class Esco:
         """
         response = await self.client.query(query)
         graph = {}
-        for result in response['results']['bindings']:
-            node = result['mid']['value']
-            parent = result['broad']['value']
+        for result in response["results"]["bindings"]:
+            node = result["mid"]["value"]
+            parent = result["broad"]["value"]
             if node not in graph:
                 graph[node] = []
             graph[node].append(parent)
         results = {}
-        self.dfs(graph, startURI, None, results,
-                 self.config['multiplierReduction'])
+        self.dfs(graph, startURI, None, results, self.config["multiplierReduction"])
         return results
 
     def dfs(self, graph, root, parent, results, multiplier=0.5):

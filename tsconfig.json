@@ -1,25 +1,27 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es2021",
     "esModuleInterop": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "strict": true,
-    "typeRoots": ["node_modules/@types", "src/typings"],
+    "baseUrl": ".",
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
     "outDir": "./dist",
     "allowJs": true,
-    "checkJs": false,
-    "baseUrl": ".",
-    "paths": {
-      "@middleware/*": ["./src/middleware/*"],
-      "@models/*": ["./src/models/*"],
-      "@routes/*": ["./src/routes/*"],
-      "@utils/*": ["./src/utils/*"],
-      "@typings/*": ["./src/typings/*"],
-      "@root/*": ["./src/*"]
-    }
+    "checkJs": false
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["**/node_modules/**", "src/client/**", "python/**"]
+  "include": [
+    "packages/api"
+  ],
+  "exclude": [
+    "**/node_modules/**"
+  ],
+  "ts-node": {
+    "require": [
+      "tsconfig-paths/register"
+    ]
+  }
 }
