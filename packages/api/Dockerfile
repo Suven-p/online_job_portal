@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM node:current
+FROM node:19-bullseye-slim
 WORKDIR /
 COPY package.json yarn.lock ./
 RUN yarn install
