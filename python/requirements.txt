@@ -1,5 +1,5 @@
 aiofiles==0.8.0
-aiohttp==3.8.5
+aiohttp==3.10.2
 aiosignal==1.2.0
 aiosparql==0.12.0
 asgiref==3.5.0
@@ -15,12 +15,12 @@ gprof2dot==2021.2.21
 h11==0.13.0
 h2==4.1.0
 hpack==4.0.0
-hypercorn==0.13.2
+hypercorn==0.16.0
 hyperframe==6.0.1
-idna==3.3
+idna==3.7
 isodate==0.6.1
 itsdangerous==2.1.0
-Jinja2==3.0.3
+Jinja2==3.1.4
 MarkupSafe==2.1.0
 multidict==6.0.2
 mysql-connector-python==8.0.28
@@ -36,8 +36,9 @@ scipy==1.10.0
 six==1.16.0
 SPARQLWrapper==1.8.5
 toml==0.10.2
-Werkzeug==2.2.3
+Werkzeug==3.0.3
 wsproto==1.1.0
 yappi==1.3.3
 yarl==1.7.2
-setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
+setuptools>=70.0.0 # not directly required, pinned by Snyk to avoid a vulnerability
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
